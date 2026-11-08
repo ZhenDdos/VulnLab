@@ -1,0 +1,40 @@
+.footer {
+    display: flex;
+    min-height: 82px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    border-top: 1px solid #e8ebef;
+    font-size: 11px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #17231f;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.brandMark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 11px;
+    background: #c6f36b;
+    color: #17231f;
+    letter-spacing: 0;
+}
+
+
+@media (max-width: 760px) {
+    .footer {
+        align-items: flex-start;
+        flex-direction: column;
+        justify-content: center;
+        padding: 20px 0;
+    }
+}

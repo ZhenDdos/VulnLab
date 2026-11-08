@@ -1,0 +1,13 @@
+.stateContainer {
+    display: flex;
+    min-height: 220px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+}
+
+.error {
+    max-width: 680px;
+    margin: 0 auto;
+}

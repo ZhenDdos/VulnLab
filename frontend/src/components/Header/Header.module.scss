@@ -1,0 +1,149 @@
+.header {
+    display: flex;
+    height: 84px;
+    margin-inline: -6vw;
+    padding-inline: 6vw;
+    position: sticky;
+    z-index: 100;
+    top: 0;
+    align-items: center;
+    justify-content: space-between;
+    background: rgb(247 248 250 / 94%);
+    border-bottom: 1px solid #e8ebef;
+    backdrop-filter: blur(12px);
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #17231f;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+}
+
+.brandMark {
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border-radius: 11px;
+    background: #c6f36b;
+    color: #17231f;
+    letter-spacing: 0;
+}
+
+
+.navigation {
+    display: flex;
+    gap: 36px;
+    color: #69746e;
+    font-size: 13px;
+}
+
+.navigation a:hover {
+    color: #17231f;
+}
+
+.accountButton {
+    height: 40px;
+    padding: 0 18px;
+    border-color: #dce1db;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.accountButton span {
+    margin-left: 8px;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cartButton {
+    height: 46px;
+    padding: 0 12px 0 8px;
+    border: 1px solid #dfe7dd;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgb(23 35 31 / 5%);
+    color: #17231f;
+    font-size: 13px;
+    font-weight: 600;
+    transition:
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        background-color 160ms ease,
+        transform 160ms ease;
+}
+
+.cartButton:hover {
+    border-color: #b6c6a9 !important;
+    background: #fff !important;
+    color: #17231f !important;
+    transform: translateY(-1px);
+    box-shadow: 0 7px 16px rgb(23 35 31 / 9%);
+}
+
+.cartButton:active {
+    transform: translateY(0);
+}
+
+.cartButtonContent {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.cartIcon {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    place-items: center;
+    border-radius: 10px;
+    background: #eff5e5;
+    color: #263d32;
+    font-size: 18px;
+}
+
+.cartCount {
+    display: inline-grid;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    place-items: center;
+    border-radius: 11px;
+    background: #c6f36b;
+    color: #17231f;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+@media (max-width: 760px) {
+
+    .header {
+        height: 72px;
+        margin-inline: -20px;
+        padding-inline: 20px;
+    }
+
+    .navigation {
+        display: none;
+    }
+
+    .cartButton {
+        height: 42px;
+        padding: 0 10px 0 6px;
+    }
+
+    .cartIcon {
+        width: 28px;
+        height: 28px;
+    }
+
+}
