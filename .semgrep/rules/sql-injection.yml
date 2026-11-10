@@ -1,0 +1,12 @@
+rules:
+  - id: tainted-sql-injection
+    languages:
+      - javascript
+      - typescript
+    mode: taint
+    pattern-sources:
+      - pattern: $REQ.query.$PARAM
+    pattern-sinks:
+      - pattern: $DB.query($QUERY)
+    message: User-controlled input reaches a SQL query.
+    severity: ERROR

@@ -1,11 +1,16 @@
-import express, { type Express, type Request, type Response } from "express";
+import { Router, type Request, type Response } from "express";
 import { pool } from "../db.js";
 
-const app: Express = express();
+const router: Router = Router();
 
-app.get("/", async (_: Request, res: Response) => {
+router.get("/", async (req: Request, res: Response) => {
   try {
-    const query = "SELECT * FROM products";
+    const sortBy =
+      typeof req.query.sortBy === "string"
+        ? req.query.sortBy.toLowerCase()
+        : "";
+    const sortDirection = sortBy;
+    const query = `SELECT * FROM products ORDER BY name ${sortDirection}`;
     const result = await pool.query(query);
     return res.status(200).json(result.rows);
   } catch {
@@ -13,4 +18,4 @@ app.get("/", async (_: Request, res: Response) => {
   }
 });
 
-export default app;
+export default router;
