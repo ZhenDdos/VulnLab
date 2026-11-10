@@ -8,7 +8,9 @@ export type Product = {
   image_url: string;
 };
 
-export const fetchProducts = async (sort: string) => {
+export type SortDirection = "asc" | "desc";
+
+export const fetchProducts = async (sort: SortDirection) => {
   const { data } = await api.get<Product[]>("/products", {
     params: { sortBy: sort },
   });

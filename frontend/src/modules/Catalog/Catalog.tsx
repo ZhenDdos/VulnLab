@@ -9,7 +9,7 @@ import {
   Typography,
 } from "antd";
 import { useProducts } from "../../api/products/products.queries";
-import type { Product } from "../../api/products/products";
+import type { Product, SortDirection } from "../../api/products/products";
 import { ShoppingCartOutlined } from "@ant-design/icons";
 import styles from "./Catalog.module.scss";
 import { useAddToCartMutation } from "../../api/cart/cart.mutations";
@@ -100,7 +100,8 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 
 export function Catalog() {
   const [searchParams] = useSearchParams();
-  const sort: string = searchParams.get("sortBy")?.toLowerCase() || "";
+  const sort: SortDirection =
+    (searchParams.get("sortBy")?.toLowerCase() as SortDirection) || "asc";
   const { data: products, isLoading, isError, error } = useProducts(sort);
 
   return (

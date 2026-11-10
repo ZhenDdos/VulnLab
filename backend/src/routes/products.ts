@@ -9,7 +9,7 @@ router.get("/", async (req: Request, res: Response) => {
       typeof req.query.sortBy === "string"
         ? req.query.sortBy.toLowerCase()
         : "";
-    const sortDirection = sortBy;
+    const sortDirection = sortBy === "desc" ? "DESC" : "ASC";
     const query = `SELECT * FROM products ORDER BY name ${sortDirection}`;
     const result = await pool.query(query);
     return res.status(200).json(result.rows);
