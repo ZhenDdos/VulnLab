@@ -14,6 +14,7 @@ import { ShoppingCartOutlined } from "@ant-design/icons";
 import styles from "./Catalog.module.scss";
 import { useAddToCartMutation } from "../../api/cart/cart.mutations";
 import Loading from "../../components/Loading";
+import { useSearchParams } from "react-router";
 
 const { Text, Title } = Typography;
 
@@ -81,7 +82,9 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
                   success(data.message);
                 },
                 onError: () => {
-                  messageApi.error("Не удалось добавить товар. Попробуйте ещё раз.");
+                  messageApi.error(
+                    "Не удалось добавить товар. Попробуйте ещё раз.",
+                  );
                 },
               })
             }
@@ -96,7 +99,9 @@ function ProductCard({ product, index }: { product: Product; index: number }) {
 }
 
 export function Catalog() {
-  const { data: products, isLoading, isError, error } = useProducts();
+  const [searchParams] = useSearchParams();
+  const sort: string = searchParams.get("sortBy")?.toLowerCase() || "";
+  const { data: products, isLoading, isError, error } = useProducts(sort);
 
   return (
     <main>

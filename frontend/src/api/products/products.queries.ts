@@ -4,15 +4,16 @@ import { fetchProducts } from "./products";
 
 export const productKeys = {
   all: ["products"] as const,
+  bySort: (sort: string) => [...productKeys.all, sort] as const,
 };
 
-export const productsQueryOptions = () =>
+export const productsQueryOptions = (sort: string) =>
   queryOptions({
-    queryKey: productKeys.all,
-    queryFn: fetchProducts,
+    queryKey: productKeys.bySort(sort),
+    queryFn: () => fetchProducts(sort),
     staleTime: 1000 * 60 * 5,
   });
 
-export const useProducts = () => {
-  return useQuery(productsQueryOptions());
+export const useProducts = (sort: string) => {
+  return useQuery(productsQueryOptions(sort));
 };
