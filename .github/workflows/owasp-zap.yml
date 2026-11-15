@@ -1,0 +1,82 @@
+name: OWASP ZAP Baseline Scan
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+  workflow_dispatch: {}
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan frontend with ZAP
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: read
+    env:
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: ${{ secrets.DB_HOST }}
+      DB_PORT: ${{ secrets.DB_PORT }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Create backend environment
+        run: |
+          for name in DB_USER DB_PASSWORD DB_HOST DB_PORT DB_NAME JWT_SECRET; do
+            if [[ -z "${!name}" ]]; then
+              echo "::error::Missing required GitHub Actions secret: $name"
+              exit 1
+            fi
+          done
+          printf '%s\n' \
+            "DB_USER=$DB_USER" \
+            "DB_PASSWORD=$DB_PASSWORD" \
+            "DB_HOST=$DB_HOST" \
+            "DB_PORT=$DB_PORT" \
+            "DB_NAME=$DB_NAME" \
+            "JWT_SECRET=$JWT_SECRET" > backend/.env
+
+      - name: Start Docker Compose stack
+        run: docker compose up -d --build
+
+      - name: Wait for Frontend to be ready
+        run: |
+          echo "Waiting for frontend and backend..."
+          for i in {1..30}; do
+            if curl --fail --silent http://localhost:5173/ >/dev/null &&
+               curl --fail --silent http://localhost:8000/api/health >/dev/null; then
+              echo "Frontend and backend are up!"
+              exit 0
+            fi
+            echo "Attempt $i failed, retrying in 2s..."
+            sleep 2
+          done
+          echo "Frontend did not become ready in time."
+          docker compose logs
+          exit 1
+
+      - name: ZAP Baseline Scan
+        uses: zaproxy/action-baseline@v0.14.0
+        with:
+          target: "http://localhost:5173"
+          allow_issue_writing: false
+          cmd_options: "-a"
+        continue-on-error: true
+
+      - name: Upload ZAP Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-scan-report
+          path: report_html.html
+          retention-days: 30
+
+      - name: Tear down Docker Compose
+        if: always()
+        run: docker compose down -v
