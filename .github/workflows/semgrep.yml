@@ -12,6 +12,7 @@ on:
     - develop
     paths:
     - .github/workflows/semgrep.yml
+    - .semgrep/**
     - frontend/**
     - backend/**
   schedule:
